@@ -19,9 +19,9 @@ class AuthController {
   		$response=Helpers::httpPostJsonWithOutToken($route.$service_key.'/'.$profile_key,$data);
       $_response=json_decode($response);
      
-      if($_response->data->user){
-         Config::set('token_hub_user',$_response->data->user->access_token);
-      }
+      // if($_response->data->user){
+      //    Config::set('token_hub_user',$_response->data->user->access_token);
+      // }
   		return $response;
   	}
 
