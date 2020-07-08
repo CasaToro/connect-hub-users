@@ -1,0 +1,40 @@
+{
+    "name": "magdalenamedio/connect-hub-users",
+    "description": "Paquete que permite enlazar usuarios entre plataformas bellpi",
+    "type": "package",
+    "authors": [
+        {
+            "name": "JohnAragon",
+            "email": "john@bellpi.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Bellpi\\ConnectHubUsers\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Bellpi\\ConnectHubUsers\\Tests\\": "tests/"
+        }
+    },
+
+    "extra":{
+        "laravel":{
+            "providers":[
+                "Bellpi\\ConnectHubUsers\\ConnectHubUsersServiceProvider",
+                "Bellpi\\ConnectHubUsers\\RouteServiceProvider" 
+            ],
+            "aliases":{
+                "HubUsers":"Bellpi\\ConnectHubUsers\\Facades\\HubUsers", 
+                "HubConnection":"Bellpi\\ConnectHubUsers\\Facades\\HubConnection"
+            }
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0@dev"
+    }
+}
