@@ -17,13 +17,21 @@ class AuthController {
   	public function login($service_key, $profile_key, $data){
       $route= config('hub-paths.base').config('hub-paths.group').config('hub-paths.path_login');
   		$response=Helpers::httpPostJsonWithOutToken($route.$service_key.'/'.$profile_key,$data);
-      //$_response=json_decode($response);
-     
-      // if($_response->data->user){
-      //    Config::set('token_hub_user',$_response->data->user->access_token);
-      // }
+      sleep(5);
+      if($response){
+        $_response=json_decode($response);    
+        if($_response->data){
+           Config::set('token_hub_user',$_response->data->access_token);
+        }
+      }
   		return $response;
   	}
+
+    public function getUserAuth($service_key, $profile_key, $data){
+      $route= config('hub-paths.base').config('hub-paths.group').config('hub-paths.path_user');
+      $response=Helpers::httpPostJson($route.$service_key.'/'.$profile_key,$data);
+      return $response;
+    }
 
     public function getProfilesService($service_key, $data){
       $route= config('hub-paths.base').config('hub-paths.group').config('hub-paths.path_profiles');

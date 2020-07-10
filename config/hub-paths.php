@@ -5,5 +5,6 @@ return [
 	'group'=>'',
 	'path_login'=>'',
 	'path_profiles'=>'',
+	'path_user'=>'',
 	'path_user_create'=>''
 ];
