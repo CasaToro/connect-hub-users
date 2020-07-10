@@ -1,18 +1,15 @@
 <?php
 namespace Bellpi\ConnectHubUsers\Utilities;
+use Bellpi\ConnectHubUsers\Utilities\Helpers;
 
 
-class Helpers {	  
-    static function httpPost($url, $data)
-    {
-      $curl = curl_init($url);
-      curl_setopt($curl, CURLOPT_POST, true);
-      curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-      $response = curl_exec($curl);
-      curl_close($curl);
-      return $response;
-    }
+class Helpers {	
+     private static $data_error_token=[
+        "status"=>"ERROR",
+        "statusCode"=>103,
+        "message"=>"No se ha encotrado token",
+        "data"=>""
+    ]; 
 
     static function httpPostJsonWithOutToken($url, $data)
     {
@@ -32,6 +29,9 @@ class Helpers {
 
     static function httpPostJson($url, $data)
     {
+      if(!$data['access_token']){
+        return json_encode(self::$data_error_token);
+      }
       $curl = curl_init($url);
       $data_encode = json_encode($data);
       curl_setopt($curl, CURLOPT_POST, true);
@@ -48,6 +48,9 @@ class Helpers {
 
     static function httpGetJson($url,$data)
     {  
+      if(!$data['access_token']){
+        return json_encode(self::$data_error_token);
+      }
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, $url);
       
