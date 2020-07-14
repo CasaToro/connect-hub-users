@@ -4,9 +4,9 @@ namespace Bellpi\ConnectHubUsers\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class HubConnection extends Facade
+class HubSession extends Facade
 {
 	protected static function getFacadeAccessor(){
-		return 'hub-connection';
+		return 'hub-session';
 	}
 }
