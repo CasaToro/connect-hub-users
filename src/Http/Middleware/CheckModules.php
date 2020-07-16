@@ -1,5 +1,5 @@
 <?php
-namespace Bellpi\HubUsers\Http\Middleware;
+namespace Bellpi\ConnectHubUsers\Http\Middleware;
 use Illuminate\Support\Facades\Config;
 use Closure;
 class CheckModules

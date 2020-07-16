@@ -1,5 +1,6 @@
 <?php
-namespace Bellpi\HubUsers\Http\Middleware;
+namespace Bellpi\ConnectHubUsers\Http\Middleware;
+use Bellpi\ConnectHubUsers\Facades\HubUsers;
 use Closure;
 class CheckProfiles
 {
