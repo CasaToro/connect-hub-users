@@ -29,7 +29,8 @@ class CheckProfiles
          foreach ($user_profiles as $u_profile) {
             foreach ($keys_profiles as $k_profile) {
               if($u_profile->key == $k_profile){
-                return $next($request);                  }
+                return $next($request);                  
+              }
             }
          }     
        }

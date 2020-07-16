@@ -29,7 +29,7 @@ class CheckModules
             $available_modules=$u_profile->available_modules;
             foreach ($available_modules as $module) {
                foreach ($keys_modules as $k_module) {
-                if($module->slug == $k_module){
+                if($module->key == $k_module){
                   return $next($request);                  
                 }
               }

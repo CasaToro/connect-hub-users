@@ -5,7 +5,6 @@ use Bellpi\ConnectHubUsers\Utilities\Helpers;
 use Symfony\Component\HttpFoundation\Cookie;
 use Bellpi\ConnectHubUsers\Facades\HubSession;
 use Illuminate\Support\Facades\Config;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
