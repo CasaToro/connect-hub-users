@@ -40,9 +40,9 @@ class AuthController {
       return $response;
     }
 
-    public function getUserAuth($service_key,$data){
+    public function getUserAuth($service_key,$token){
       $data=[
-        'token'=>$token
+        'access_token'=>$token
       ];
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').$service_key,$data);
       return $response;

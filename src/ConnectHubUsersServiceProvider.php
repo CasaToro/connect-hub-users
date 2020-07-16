@@ -12,6 +12,7 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
     public function boot()
     {
       $this->publishes([$this->basePath('config/hub-paths.php')=>base_path('config/hub-paths.php')],'hub-users-paths');
+      $this->publishes([$this->basePath('config/hub-service-key.php')=>base_path('config/hub-service-key.php')],'hub-users-keys');
     }
 
     public function register()
@@ -26,7 +27,10 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
 
       $router = $this->app['router'];
       $router->aliasMiddleware('hub-users-auth', Http\Middleware\CheckToken::class);
+      $router->aliasMiddleware('hub-users-profiles', Http\Middleware\CheckProfiles::class);
+      $router->aliasMiddleware('hub-users-modules', Http\Middleware\CheckModules::class);
       $this->mergeConfigFrom($this->basePath('config/hub-paths.php'),'hub-paths');
+      $this->mergeConfigFrom($this->basePath('config/hub-service-key.php'),'hub-service-key');
     } 
 
 
