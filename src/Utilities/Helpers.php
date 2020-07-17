@@ -29,7 +29,7 @@ class Helpers {
 
     static function httpPostJson($url, $data)
     {
-      if(!$data['access_token']){
+      if(!$data['accessToken']){
         return json_encode(self::$data_error_token);
       }
       $curl = curl_init($url);
@@ -38,7 +38,7 @@ class Helpers {
       curl_setopt($curl, CURLOPT_POSTFIELDS, $data_encode);
       curl_setopt($curl, CURLOPT_HTTPHEADER, array(
          "Content-Type:application/json",
-         "Authorization:Bearer {$data['access_token']}"
+         "Authorization:Bearer {$data['accessToken']}"
       ));
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       $response = curl_exec($curl);
@@ -48,7 +48,7 @@ class Helpers {
 
     static function httpGetJson($url,$data)
     {  
-      if(!$data['access_token']){
+      if(!$data['accessToken']){
         return json_encode(self::$data_error_token);
       }
       $ch = curl_init();
@@ -56,7 +56,7 @@ class Helpers {
       
       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           "Content-Type:application/json",
-          "Authorization: {$data['token_type']} {$data['access_token']}"
+          "Authorization:Bearer {$data['accessToken']}"
       ));
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       $response = curl_exec($ch);
