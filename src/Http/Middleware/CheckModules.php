@@ -19,6 +19,13 @@ class CheckModules
        
       $keys_modules = array_slice(func_get_args(), 2);
       $token = session('hub_ssk');
+      if(!$token){
+        if ($request->ajax()) {
+          return response('No autorizado.', 401);
+        }
+        return abort(401);
+      }
+
       $user_profiles=[];
       $_verify_user=HubUsers::getUserAuth(config('hub-service-key.key'),$token);
       $verify_user=json_decode($_verify_user);

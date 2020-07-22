@@ -8,4 +8,6 @@ return [
 	'path_user'=>'',
 	'path_user_create'=>'',
 	'path_token'=>'',
+	'path_logout'=>'',
+	'route_local_login'=>''
 ];

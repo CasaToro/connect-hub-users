@@ -21,10 +21,6 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
         return new Http\Controllers\Auth\AuthController;
       });
 
-      $this->app->bind('hub-session',function(){
-        return new Http\Controllers\Session\SessionController;
-      });
-
       $router = $this->app['router'];
       $router->aliasMiddleware('hub-users-auth', Http\Middleware\CheckToken::class);
       $router->aliasMiddleware('hub-users-profiles', Http\Middleware\CheckProfiles::class);

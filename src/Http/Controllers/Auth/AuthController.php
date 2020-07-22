@@ -57,6 +57,13 @@ class AuthController {
        return $response;
     }
 
+    public function logout($key,$data){ 
+       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_logout').$key,$data);
+       \Session::forget('hub_ssk');
+       \Session::save();
+       return $response;
+    }
+
      public function setSessionToken($token){
       $response = new Response(); 
       \Session::put('hub_ssk',$token);

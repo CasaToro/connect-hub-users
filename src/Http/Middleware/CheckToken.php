@@ -15,8 +15,10 @@ class CheckToken
 
   public function handle($request, Closure $next)
   {
-      
     $token = session('hub_ssk');
+    if(!$token){
+      return redirect(config('hub-paths.route_local_login'));
+    }
 
     $_verify_token=HubUsers::checkToken(config('hub-service-key.key'),$token); 
     
@@ -35,8 +37,6 @@ class CheckToken
     if ($request->ajax()) {
         return response('No autorizado.', 401);
     }
-
-    return abort(401);
- 
+    return redirect(config('hub-paths.route_local_login'));
   }   
 }
