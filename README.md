@@ -90,7 +90,7 @@ $data_create_user=[];
   'name'=>"Susana Avila",
   'email'=>"suasana-avila@gmail.com",
   'profiles'=>[1,2],
-  'password'=>'bellpi2020',
+  'password'=>'password',
   'accessToken'=>session('hub_ssk')
  ];
 
