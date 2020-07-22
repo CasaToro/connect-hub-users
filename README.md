@@ -28,7 +28,7 @@ return [
 	'path_token'=>'',
 	'path_profiles'=>'',
 	'path_user_create'=>'',
-  'path_logout'=>'',
+	'path_logout'=>'',
 	'route_local_login'=>''
 ]  
 ```
@@ -114,11 +114,11 @@ Route::get('/test','TestingController2@test')->middleware('hub-users-auth');
 Para proteger sus controladores debera hacer uso de la funcion contstuctor e incluir lo siguiente:
 ```php
 public function __construct(){
-		$this->middleware(['hub-users-profiles:'.env('key-profile-1').','.env('key-profile-1')]....);
-		$this->middleware(['hub-users-modules:'.env('key-module-1').','.env('key-module-2')])....;
-	}
+     $this->middleware(['hub-users-profiles:'.env('key-profile-1').','.env('key-profile-1')]....);
+     $this->middleware(['hub-users-modules:'.env('key-module-1').','.env('key-module-2')])....;
+}
 ```
-Las llaves de los modulos creados para su proyecto tambien seran suministradas por el administrador del paquete.
+Las llaves de los módulos creados para su proyecto tambien serán suministradas por el administrador del paquete.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
