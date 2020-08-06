@@ -28,7 +28,8 @@ class AuthController {
       if($response){
         $_response=json_decode($response);    
         if($_response->data){
-          $this->setSessionToken($_response->data->access_token);
+          $token=$_response->data->access_token;
+          $this->setSessionToken($token);
         }
       }
   		return $response;
@@ -41,9 +42,17 @@ class AuthController {
 
     public function getUserAuth($service_key,$token){
       $data=[
-        'access_token'=>$token
+        'accessToken'=>$token
       ];
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').$service_key,$data);
+      return $response;
+    }
+
+    public function getUserInfoServices(){
+      $data=[
+        'accessToken'=>session('hub_ssk')
+      ];
+      $response=Helpers::httpPostJson($this->route.'client/auth/user/services',$data);
       return $response;
     }
 
