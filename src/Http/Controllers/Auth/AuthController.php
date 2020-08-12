@@ -4,12 +4,16 @@ namespace Bellpi\ConnectHubUsers\Http\Controllers\Auth;
 use Bellpi\ConnectHubUsers\Utilities\Helpers;
 use Symfony\Component\HttpFoundation\Cookie;
 use Bellpi\ConnectHubUsers\Facades\HubSession;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth as AuthHub;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
+use Auth;
+use Session;
 use Illuminate\Http\Response;
 
 class AuthController {	  
-    public function __construct(){
+      public function __construct(){
        $this->route=config('hub-paths.base').config('hub-paths.group');
     }
 
@@ -33,7 +37,7 @@ class AuthController {
         }
       }
   		return $response;
-  	}
+    }  
 
     public function getUserProfile($service_key, $profile_key, $data){
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').$service_key.'/'.$profile_key,$data);
@@ -79,4 +83,5 @@ class AuthController {
       \Session::save();
       return $response;
     }
+
 }

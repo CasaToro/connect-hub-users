@@ -4,9 +4,11 @@ namespace Bellpi\ConnectHubUsers\Http\Controllers\Test;
 use Bellpi\ConnectHubUsers\Utilities\Helpers;
 use Bellpi\ConnectHubUsers\Facades\HubUsers;
 use Illuminate\Http\Request;
+use App\HubUser;
+use Auth;
 
 class TestController {
-	public function showLoginForm(){
+	public function showLoginFormTest(){
 		return view('hub-users::auth.login');
 	}
 	public function login(Request $request){

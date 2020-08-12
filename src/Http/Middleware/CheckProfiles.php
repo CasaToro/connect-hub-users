@@ -15,7 +15,8 @@ class CheckProfiles
   public function handle($request, Closure $next)
   {
     
-    //Excluir del array las parametros request y closure, para obtener los parametros que se definen en el middleware de cada contralador
+    //Excluir del array las parametros request y closure, para obtener los parametros que se definen 
+    //en el middleware de cada contralador
     
     $keys_profiles = array_slice(func_get_args(), 2);
 

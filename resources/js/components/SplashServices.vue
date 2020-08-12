@@ -21,12 +21,14 @@
                        <a class="btn btn-primary btn-white dropdown-toggle" v-bind:id="'dropdownMenuLink-'+service.id" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ingresar</a>
                         <div class="dropdown-menu" v-bind:aria-labelledby="'dropdownMenuLink-'+service.id" x-placement="bottom-start"> 
                           <template v-for="profile in service.profiles">
-                            <a class="dropdown-item" v-bind:href="service.url" v-text="profile.name"></a>
+                            <a class="dropdown-item" v-bind:href="service.url+profile.slug" v-text="profile.name"></a>
                           </template>
                         </div>
                     </template>
                     <template v-else>
-                      <a v-bind:href="service.url"><input type="button" class="btn btn-primary" value="Ingresar"></a>
+                      <template v-for="profile in service.profiles">
+                        <a v-bind:href="service.url+profile.slug"><input type="button" class="btn btn-primary" value="Ingresar"></a>
+                      </template>  
                     </template>            
                   </template>  
                   <template v-else>

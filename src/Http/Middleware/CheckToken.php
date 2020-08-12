@@ -3,6 +3,7 @@ namespace Bellpi\ConnectHubUsers\Http\Middleware;
 use Illuminate\Support\Facades\Config;
 use Bellpi\ConnectHubUsers\Facades\HubUsers;
 use App\HubUser;
+use Auth;
 use Closure;
 class CheckToken
 {
@@ -17,6 +18,7 @@ class CheckToken
   public function handle($request, Closure $next)
   {
     $token = session('hub_ssk');
+
     if(!$token){
       if ($request->ajax()) {
         return response('No autorizado.', 401);
@@ -42,9 +44,11 @@ class CheckToken
               'access_token'=>$verify_user['user']['access_token'],
               'email_verified_at'=>$verify_user['user']['email_verified_at'],
               'info_json'=>$info
-            ]);  
+            ]); 
+          $hub_user=HubUser::where('email',$verify_user['user']['email'])->first();
+          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, true);
         }
-     
+        
         if($token != $verify_token->data->access_token){
           \Session::put('hub_ssk',$verify_token->data->access_token);
           \Session::save();
