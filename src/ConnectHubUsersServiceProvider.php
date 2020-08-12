@@ -11,8 +11,14 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
 
     public function boot()
     {
-      $this->publishes([$this->basePath('config/hub-paths.php')=>base_path('config/hub-paths.php')],'hub-users-paths');
-      $this->publishes([$this->basePath('config/hub-service-key.php')=>base_path('config/hub-service-key.php')],'hub-users-keys');
+      $this->LoadViewsFrom($this->basePath('resources/views'),'hub-users'); 
+      $this->LoadMigrationsFrom($this->basePath('database/migrations'));
+      $this->publishes([$this->basePath('config')=>base_path('config')],'hub-users-config');
+      $this->publishes([$this->basePath('resources/assets')=>public_path('vendor/hub-users')
+        ],'hub-users-assets');
+      $this->publishes([$this->basePath('resources/js/components')=>base_path('resources/js/hub-users/components')
+        ],'hub-users-components');
+
     }
 
     public function register()
@@ -22,11 +28,14 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
       });
 
       $router = $this->app['router'];
-      $router->aliasMiddleware('hub-users-auth', Http\Middleware\CheckToken::class);
+      $router->aliasMiddleware('hub-users-token', Http\Middleware\CheckToken::class);
+      $router->aliasMiddleware('hub-users-auth', Http\Middleware\AuthHub::class);
       $router->aliasMiddleware('hub-users-profiles', Http\Middleware\CheckProfiles::class);
-      $router->aliasMiddleware('hub-users-modules', Http\Middleware\CheckModules::class);
+      $router->aliasMiddleware('hub-users-modules', Http\Middleware\CheckModules::class); 
       $this->mergeConfigFrom($this->basePath('config/hub-paths.php'),'hub-paths');
       $this->mergeConfigFrom($this->basePath('config/hub-service-key.php'),'hub-service-key');
+      $this->publishes([__DIR__.'/Models'=>base_path('/app')
+        ],'hub-users-models');
     } 
 
 

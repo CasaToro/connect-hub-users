@@ -5,6 +5,7 @@ return [
 	'group'=>'',
 	'path_login'=>'',
 	'path_profiles'=>'',
+	'path_services'=>'',
 	'path_user'=>'',
 	'path_user_create'=>'',
 	'path_token'=>'',
