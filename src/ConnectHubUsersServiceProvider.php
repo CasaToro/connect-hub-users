@@ -29,11 +29,11 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
 
       $router = $this->app['router'];
       $router->aliasMiddleware('hub-users-token', Http\Middleware\CheckToken::class);
-      $router->aliasMiddleware('hub-users-auth', Http\Middleware\AuthHub::class);
       $router->aliasMiddleware('hub-users-profiles', Http\Middleware\CheckProfiles::class);
       $router->aliasMiddleware('hub-users-modules', Http\Middleware\CheckModules::class); 
       $this->mergeConfigFrom($this->basePath('config/hub-paths.php'),'hub-paths');
       $this->mergeConfigFrom($this->basePath('config/hub-service-key.php'),'hub-service-key');
+      $this->mergeConfigFrom($this->basePath('config/hub-auth.php'),'hub-auth');
       $this->publishes([__DIR__.'/Models'=>base_path('/app')
         ],'hub-users-models');
     } 

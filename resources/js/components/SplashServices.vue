@@ -4,6 +4,7 @@
       <li class="nav-item active">
           <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
           <i class="fa fa-th" style="font-size: 22px"></i>
+          <input type="hidden">
       </a>
       <div class="dropdown-menu dropdown-menu-right col-md-4" style="height:400px; overflow:auto" aria-labelledby="navbarDropdown">
        <div class="row col-md-12">  
@@ -21,14 +22,14 @@
                        <a class="btn btn-primary btn-white dropdown-toggle" v-bind:id="'dropdownMenuLink-'+service.id" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ingresar</a>
                         <div class="dropdown-menu" v-bind:aria-labelledby="'dropdownMenuLink-'+service.id" x-placement="bottom-start"> 
                           <template v-for="profile in service.profiles">
-                            <a class="dropdown-item" v-bind:href="service.url+profile.slug" v-text="profile.name"></a>
+                            <a class="dropdown-item" v-bind:href="service.url+profile.slug+'?hub_ssk='+hubssk+'&profile='+profile.key" target="_blank" v-text="profile.name"></a>
                           </template>
                         </div>
                     </template>
                     <template v-else>
                       <template v-for="profile in service.profiles">
-                        <a v-bind:href="service.url+profile.slug"><input type="button" class="btn btn-primary" value="Ingresar"></a>
-                      </template>  
+                        <a v-bind:href="service.url+profile.slug+'?hub_ssk='+hubssk+'&profile='+profile.key" target="_blank"><input type="button" class="btn btn-primary" value="Ingresar"></a>
+                       </template> 
                     </template>            
                   </template>  
                   <template v-else>
@@ -46,9 +47,12 @@
 </div>   
 </template>
 <script>
-  export default {
+  var hubssk = $("#hubssk").val(); 
+  export default { 
+    
     data(){
         return{
+          hubssk:hubssk,
           services:[]
         }
     },
@@ -57,6 +61,7 @@
       
     },
     methods:{
+  
       dataUser(){
         axios.get('/hub-users-info',
           this.access,
