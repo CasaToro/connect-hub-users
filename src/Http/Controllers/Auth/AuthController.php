@@ -13,21 +13,24 @@ use Session;
 use Illuminate\Http\Response;
 
 class AuthController {	  
-      public function __construct(){
+    public function __construct(){
        $this->route=config('hub-paths.base').config('hub-paths.group');
     }
 
+    //-------------Validar o refrescar token------------------
     public function checkToken($service_key, $token){
-      $route= config('hub-paths.path_token');
       $data=[
         'token'=>$token
       ];
-      $response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_token').$service_key,$data);
+      $route= config('hub-paths.path_token');  
+      $response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_token').config('hub-service-key.key'),$data);
       return $response;
     }
+    //---------------------------------------------------------
 
-  	public function login($service_key, $profile_key, $data){
-  		$response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_login').$service_key.'/'.$profile_key,$data);
+    //---------------Ejecutar login en la aplicacion-----------------
+  	public function login($profile_key, $data){
+  		$response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_login').config('hub-service-key.key').'/'.$profile_key,$data);
       sleep(5);
       if($response){
         $_response=json_decode($response);    
@@ -38,40 +41,67 @@ class AuthController {
       }
   		return $response;
     }  
+    //------------------------------------------------------------
 
-    public function getUserProfile($service_key, $profile_key, $data){
-      $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').$service_key.'/'.$profile_key,$data);
-      return $response;
-    }
-
-    public function getUserAuth($service_key,$token){
+    //-------------Data Perfil Usuario----------------------------
+    public function getUserProfile($profile_key){
       $data=[
-        'accessToken'=>$token
+        'accessToken'=>session('hub_ssk')
       ];
-      $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').$service_key,$data);
+  
+      $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').config('hub-service-key.key').'/'.$profile_key,$data);
       return $response;
     }
 
+    //--------------------------------------------------------------
+
+    //--------------Info usuario autenticado------------------------
+    public function getUserAuth(){
+      $data=[
+        'accessToken'=>session('hub_ssk')
+      ];
+      $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').config('hub-service-key.key'),$data);
+      return $response;
+    }
+    //---------------------------------------------------------------
+
+    //-------------Data Menú Splash----------------------------------
     public function getUserInfoServices(){
       $data=[
         'accessToken'=>session('hub_ssk')
       ];
-      $response=Helpers::httpPostJson($this->route.'client/auth/user/services',$data);
+
+      $response=Helpers::httpPostJson($this->route.config('hub-paths.path_services'),$data);
       return $response;
     }
+    //-----------------------------------------------------------------
+
+    //------Listado de perfiles habilitados para el servicio-----------
 
     public function getProfilesService($service_key, $data){
+      $data=[
+          'accessToken'=>session('hub_ssk')
+        ]; 
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_profiles').$service_key,$data);
       return $response;
     }
+    //------------------------------------------------------------------
 
-    public function userUpdate($key,$data){ 
+    //-----------------Actualizacion perfiles usuario-------------------
+    public function userUpdate($key,$data){
+       $data=[
+          'accessToken'=>session('hub_ssk')
+        ]; 
        $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user_create').$key,$data);
        return $response;
     }
+    //-------------------------------------------------------------------
 
-    public function logout($key,$data){ 
-       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_logout').$key,$data);
+    public function logout(){ 
+       $data=[
+          'accessToken'=>session('hub_ssk')
+        ];
+       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_logout').config('hub-service-key.key'),$data);
        \Session::forget('hub_ssk');
        \Session::save();
        return $response;

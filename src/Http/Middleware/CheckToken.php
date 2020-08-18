@@ -17,7 +17,16 @@ class CheckToken
 
   public function handle($request, Closure $next)
   {
+
     $token = session('hub_ssk');
+
+    if(!$token){
+      if($request->hub_ssk){
+        $token = $request->hub_ssk;
+        \Session::put('profile',$request->profile);
+        \Session::save();
+      }  
+    } 
 
     if(!$token){
       if ($request->ajax()) {

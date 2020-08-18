@@ -16,7 +16,7 @@ class TestController {
 			'email'=>$request->email,
 			'password'=>$request->password
 		];
-		$response=HubUsers::login($request->service_key, $request->profile_key,$data);
+		$response=HubUsers::login($request->profile_key,$data);
 		return $response;
 	}
 
@@ -25,15 +25,12 @@ class TestController {
 	}
 
 	public function infoUserAuth(Request $request){
-		$response=HubUsers::getUserAuth($request->service_key,$request->access_token);
+		$response=HubUsers::getUserAuth();
 		return $response;
 	}
 
 	public function infoUserProfile(Request $request){
-		$data=[
-			'accessToken' => session('hub_ssk')
-		];
-		$response=HubUsers::getUserProfile($request->service_key,$request->profile_key,$data);
+		$response=HubUsers::getUserProfile($request->profile_key);
 		return $response;
 	}	
 
