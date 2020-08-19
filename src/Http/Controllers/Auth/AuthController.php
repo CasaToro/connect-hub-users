@@ -18,7 +18,7 @@ class AuthController {
     }
 
     //-------------Validar o refrescar token------------------
-    public function checkToken($service_key, $token){
+    public function checkToken($token){
       $data=[
         'token'=>$token
       ];
@@ -56,9 +56,9 @@ class AuthController {
     //--------------------------------------------------------------
 
     //--------------Info usuario autenticado------------------------
-    public function getUserAuth(){
+    public function getUserAuth($token){
       $data=[
-        'accessToken'=>session('hub_ssk')
+        'accessToken'=>$token
       ];
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').config('hub-service-key.key'),$data);
       return $response;
@@ -96,6 +96,7 @@ class AuthController {
        return $response;
     }
     //-------------------------------------------------------------------
+
 
     public function logout(){ 
        $data=[

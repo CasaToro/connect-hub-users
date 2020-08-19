@@ -17,6 +17,7 @@ class TestController {
 			'password'=>$request->password
 		];
 		$response=HubUsers::login($request->profile_key,$data);
+	
 		return $response;
 	}
 
