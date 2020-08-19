@@ -21,8 +21,8 @@ class CheckToken
     $token = session('hub_ssk');
 
     if(!$token){
-      if($request->hub_ssk){
-        $token = $request->hub_ssk;
+      if($request->api_token){
+        $token = $request->api_token;
         \Session::put('profile',$request->profile);
         \Session::save();
       }  
@@ -35,11 +35,11 @@ class CheckToken
       return redirect(config('hub-paths.route_local_login'));
     }
 
-    $_verify_token=HubUsers::checkToken(config('hub-service-key.key'),$token); 
+    $_verify_token=HubUsers::checkToken($token); 
     $verify_token=json_decode($_verify_token);
     if($verify_token && $token){
       if($verify_token->status == 'OK'){
-        $verify_user=HubUsers::getUserAuth(config('hub-service-key.key'),$verify_token->data->access_token);
+        $verify_user=HubUsers::getUserAuth($verify_token->data->access_token);
         $verify_user=json_decode($verify_user,true);
         if($verify_user['user']){
           $info=array_merge($verify_user['user']['services'],$verify_user['user']['profiles']);
@@ -55,14 +55,22 @@ class CheckToken
               'info_json'=>$info
             ]); 
           $hub_user=HubUser::where('email',$verify_user['user']['email'])->first();
-          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, true);
+          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, false);
         }
         
-        if($token != $verify_token->data->access_token){
+       if($token != $verify_token->data->access_token){
           \Session::put('hub_ssk',$verify_token->data->access_token);
           \Session::save();
-        }             
-        return $next($request);     
+          $response = $next($request);
+         
+        }else{
+          \Session::put('hub_ssk',$token);
+          \Session::save();
+          $response = $next($request);
+          
+        }        
+        
+        return $response;     
       } 
     }   
 

@@ -9,5 +9,5 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['middleware' => ['web']], function () {
 	Route::get('test-login','Test\TestController@showLoginFormTest')->name('test-login');
 	
-	Route::get('home-hub','Test\TestController@home')->middleware(['hub-users-token','auth:hub-user']);
+	Route::get('home-hub','Test\TestController@home')->middleware(['hub-users-auth','auth:hub-user']);
 });
