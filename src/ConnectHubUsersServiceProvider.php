@@ -16,9 +16,8 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
       $this->publishes([$this->basePath('config')=>base_path('config')],'hub-users-config');
       $this->publishes([$this->basePath('resources/assets')=>public_path('vendor/hub-users')
         ],'hub-users-assets');
-      $this->publishes([$this->basePath('resources/js/components')=>base_path('resources/js/hub-users/components')
+      $this->publishes([$this->basePath('resources/js/components')=>base_path('resources/js/hub-users')
         ],'hub-users-components');
-
     }
 
     public function register()

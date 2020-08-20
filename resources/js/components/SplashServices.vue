@@ -22,13 +22,13 @@
                        <a class="btn btn-primary btn-white dropdown-toggle" v-bind:id="'dropdownMenuLink-'+service.id" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ingresar</a>
                         <div class="dropdown-menu" v-bind:aria-labelledby="'dropdownMenuLink-'+service.id" x-placement="bottom-start"> 
                           <template v-for="profile in service.profiles">
-                            <a class="dropdown-item" v-bind:href="service.url+profile.slug+'?api_token='+hubssk+'&profile='+profile.key" target="_blank" v-text="profile.name"></a>
+                            <a class="dropdown-item" v-bind:href="service.url+profile.slug+'?api_token='+hubsskey+'&profile='+profile.key" target="_blank" v-text="profile.name"></a>
                           </template>
                         </div>
                     </template>
                     <template v-else>
                       <template v-for="profile in service.profiles">
-                        <a v-bind:href="service.url+profile.slug+'?api_token='+hubssk+'&profile='+profile.key" target="_blank"><input type="button" class="btn btn-primary" value="Ingresar"></a>
+                        <a v-bind:href="service.url+profile.slug+'?api_token='+hubsskey+'&profile='+profile.key" target="_blank"><input type="button" class="btn btn-primary" value="Ingresar"></a>
                        </template> 
                     </template>            
                   </template>  
@@ -52,7 +52,7 @@
     
     data(){
         return{
-          hubssk:hubssk,
+          hubsskey:hubssk,
           services:[]
         }
     },

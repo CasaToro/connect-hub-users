@@ -18,6 +18,8 @@ class CheckTokenApi
   public function handle($request, Closure $next)
   {
 
+    //Utilizara el token para validar o refrescorlo a su vez actualizara info del usuario
+    //Se debe utilizar para servicios API
     $token = $request->api_token;
 
     if(!$token){
@@ -29,24 +31,10 @@ class CheckTokenApi
     $_verify_token=HubUsers::checkToken($token); 
     $verify_token=json_decode($_verify_token);
     if($verify_token && $token){
-      if($verify_token->status == 'OK'){
-        $verify_user=HubUsers::getUserAuth($verify_token->data->access_token);
-        $verify_user=json_decode($verify_user,true);
-        if($verify_user['user']){
-          $info=array_merge($verify_user['user']['services'],$verify_user['user']['profiles']);
-          $info=json_encode($info);
-          HubUser::UpdateOrCreate(['id'=>$verify_user['user']['id']],
-          [
-            'id'=>$verify_user['user']['id'],   
-            'name'=>$verify_user['user']['name'],
-            'email'=>$verify_user['user']['email'],
-            'password'=>$verify_user['user']['password'],
-            'api_token'=>$verify_user['user']['access_token'],
-            'email_verified_at'=>$verify_user['user']['email_verified_at'],
-            'info_json'=>$info
-          ]); 
-        }
-
+       if($verify_token->status == 'OK'){
+          $verify_user=HubUsers::feedLocalUser($verify_token->data->access_token);
+          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
+        } 
         return $next($request);     
       } 
     }   

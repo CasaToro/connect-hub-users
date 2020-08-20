@@ -17,24 +17,27 @@ class TestController {
 			'password'=>$request->password
 		];
 		$response=HubUsers::login($request->profile_key,$data);
-	
 		return $response;
 	}
 
 	public function home(){
+		//dd(Auth::user());
 		return view('hub-users::home');
 	}
 
 	public function infoUserAuth(Request $request){
-		$response=HubUsers::getUserAuth();
+		$response=HubUsers::getUserAuth($request->access_token);
 		return $response;
 	}
 
 	public function infoUserProfile(Request $request){
 		$response=HubUsers::getUserProfile($request->profile_key);
 		return $response;
+	}
+
+	public function logout(Request $request){
+		$response=HubUsers::logout($request);
+		return $response;
 	}	
-
-
 
 }	
