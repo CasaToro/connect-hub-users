@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth as AuthHub;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 use Auth;
+use App\HubUser;
 use Session;
 use Illuminate\Http\Response;
 
@@ -17,7 +18,7 @@ class AuthController {
        $this->route=config('hub-paths.base').config('hub-paths.group');
     }
 
-    //-------------Validar o refrescar token------------------
+    //-------------Validar o refrescar token-------------------------
     public function checkToken($token){
       $data=[
         'token'=>$token
@@ -26,9 +27,9 @@ class AuthController {
       $response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_token').config('hub-service-key.key'),$data);
       return $response;
     }
-    //---------------------------------------------------------
+    //----------------------------------------------------------------
 
-    //---------------Ejecutar login en la aplicacion-----------------
+    //---------------Ejecutar login en la aplicacion------------------
   	public function login($profile_key, $data){
   		$response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_login').config('hub-service-key.key').'/'.$profile_key,$data);
       sleep(5);
@@ -37,6 +38,8 @@ class AuthController {
         if($_response->data){
           $token=$_response->data->access_token;
           $this->setSessionToken($token);
+          $hub_user=$this->feedLocalUser($token);
+          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, false);
         }
       }
   		return $response;
@@ -48,6 +51,9 @@ class AuthController {
       $data=[
         'accessToken'=>session('hub_ssk')
       ];
+      if($profile_key == null || $profile_key==""){
+        $profile_key=session('profile');
+      }
   
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user').config('hub-service-key.key').'/'.$profile_key,$data);
       return $response;
@@ -97,22 +103,82 @@ class AuthController {
     }
     //-------------------------------------------------------------------
 
-
-    public function logout(){ 
+    //-----------------Cerrar Sesión-------------------------------------
+    public function logout(Request $request){ 
        $data=[
           'accessToken'=>session('hub_ssk')
         ];
        $response=Helpers::httpPostJson($this->route.config('hub-paths.path_logout').config('hub-service-key.key'),$data);
-       \Session::forget('hub_ssk');
-       \Session::save();
-       return $response;
+       if($response){
+        $_response=json_decode($response);    
+        if($_response->status=='OK'){
+          $this->guard(config('hub-auth.guard-hub'))->logout();
+          \Session::forget('hub_ssk'); 
+          \Session::forget('profile');
+          \Session::save();
+          $request->session()->invalidate();
+          return $this->loggedOut($request) ?: redirect('/');
+        }
+      }
+      return $response;
     }
 
+         
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard($guard)
+    {
+        return Auth::guard($guard);
+    }
+
+    //------------------------------------------------------------------------
+
+    //--------------------Poblar tabla de usuarios del paquete en local-------
+    public function feedLocalUser($token){
+      $verify_user=$this->getUserAuth($token);
+      $verify_user=json_decode($verify_user,true);
+      if($verify_user['user']){
+        $info=array_merge($verify_user['user']['services'],$verify_user['user']['profiles']);
+        $info=json_encode($info);
+        HubUser::UpdateOrCreate(['id'=>$verify_user['user']['id']],
+          [
+            'id'=>$verify_user['user']['id'],   
+            'name'=>$verify_user['user']['name'],
+            'email'=>$verify_user['user']['email'],
+            'password'=>$verify_user['user']['password'],
+            'api_token'=>$verify_user['user']['access_token'],
+            'email_verified_at'=>$verify_user['user']['email_verified_at'],
+            'info_json'=>$info
+          ]); 
+        $hub_user=HubUser::where('email',$verify_user['user']['email'])->first();
+        return $hub_user;
+      }
+      return false; 
+    } 
+
+    //------------------------------------------------------------------------------
+
+    //--------------------Establecer token en sesion --------------------------------
      public function setSessionToken($token){
       $response = new Response(); 
       \Session::put('hub_ssk',$token);
       \Session::save();
       return $response;
     }
+    //-------------------------------------------------------------------------------
 
 }

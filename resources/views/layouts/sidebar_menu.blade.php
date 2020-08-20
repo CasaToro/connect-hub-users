@@ -14,7 +14,7 @@
                      document.getElementById('logout-form').submit();">
         <i class="fas fa-power-off"></i>{{ __(' Cerrar Sesiòn') }}
       </a>
-      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+      <form id="logout-form" action="{{ route('logout-test') }}" method="POST" style="display: none;">
         @csrf
       </form>
     </li>
