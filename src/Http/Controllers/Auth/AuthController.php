@@ -37,7 +37,7 @@ class AuthController {
         $_response=json_decode($response);    
         if($_response->data){
           $token=$_response->data->access_token;
-          $this->setSessionToken($token);
+          $this->setSessionToken($token, $profile_key);
           $hub_user=$this->feedLocalUser($token);
           Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, false);
         }
@@ -173,9 +173,10 @@ class AuthController {
     //------------------------------------------------------------------------------
 
     //--------------------Establecer token en sesion --------------------------------
-     public function setSessionToken($token){
+     public function setSessionToken($token, $profile_key){
       $response = new Response(); 
       \Session::put('hub_ssk',$token);
+      \Session::put('hub_ssk',$profile_key);      
       \Session::save();
       return $response;
     }
