@@ -176,7 +176,7 @@ class AuthController {
      public function setSessionToken($token, $profile_key){
       $response = new Response(); 
       \Session::put('hub_ssk',$token);
-      \Session::put('hub_ssk',$profile_key);      
+      \Session::put('profile',$profile_key);      
       \Session::save();
       return $response;
     }

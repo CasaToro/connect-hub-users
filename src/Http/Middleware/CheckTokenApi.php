@@ -31,13 +31,12 @@ class CheckTokenApi
     $_verify_token=HubUsers::checkToken($token); 
     $verify_token=json_decode($_verify_token);
     if($verify_token && $token){
-       if($verify_token->status == 'OK'){
-          $verify_user=HubUsers::feedLocalUser($verify_token->data->access_token);
-          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
-        } 
-        return $next($request);     
+      if($verify_token->status == 'OK'){
+        $verify_user=HubUsers::feedLocalUser($verify_token->data->access_token);
+        Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
       } 
-    }   
+      return $next($request);     
+    }    
 
     if ($request->ajax()) {
         return response('Token invalido.', 401);
