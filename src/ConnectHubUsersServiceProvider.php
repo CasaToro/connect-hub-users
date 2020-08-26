@@ -18,6 +18,8 @@ class ConnectHubUsersServiceProvider extends ServiceProvider
         ],'hub-users-assets');
       $this->publishes([$this->basePath('resources/js/components')=>base_path('resources/js/hub-users')
         ],'hub-users-components');
+      $this->publishes([$this->basePath('database/migrations')=>base_path('database/migrations')
+        ],'hub-users-migrations');
     }
 
     public function register()
