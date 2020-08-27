@@ -85,9 +85,7 @@ class AuthController {
     //------Listado de perfiles habilitados para el servicio-----------
 
     public function getProfilesService($service_key, $data){
-      $data=[
-          'accessToken'=>session('hub_ssk')
-        ]; 
+
       $response=Helpers::httpPostJson($this->route.config('hub-paths.path_profiles').$service_key,$data);
       return $response;
     }
@@ -95,9 +93,7 @@ class AuthController {
 
     //-----------------Actualizacion perfiles usuario-------------------
     public function userUpdate($key,$data){
-       $data=[
-          'accessToken'=>session('hub_ssk')
-        ]; 
+
        $response=Helpers::httpPostJson($this->route.config('hub-paths.path_user_create').$key,$data);
        return $response;
     }
