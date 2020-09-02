@@ -50,8 +50,7 @@
               element:{}
             }
         },
-        mounted() {
-            console.log('Component mounted.')
+        mounted() { 
             this.element=this.elementInitialState();
 
         },
@@ -60,9 +59,7 @@
           elementInitialState(){
             return {
                 email:'',
-                password:'',
-                service_key:'89381452d9d4c001cf04bbacb631dc6a',
-                profile_key:'78c4f9b117bcbfce15434b2327c5ec4c'
+                password:''
             }
           },
           login(){
@@ -76,14 +73,6 @@
             ).then(response => {
     
               if(response.data.status=="OK"){
-                var token = response.data.data.access_token
-                var type = response.data.data.token_type
-                var service_key = this.element.service_key
-                var profile_key = this.element.profile_key
-                localStorage.setItem('access_token', token)
-                localStorage.setItem('token_type', type)
-                localStorage.setItem('service_key', service_key)
-                localStorage.setItem('profile_key', profile_key)
                 window.location.href ="/home-hub";
               }
                 

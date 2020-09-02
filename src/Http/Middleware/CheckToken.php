@@ -40,12 +40,12 @@ class CheckToken
     $verify_token=json_decode($_verify_token);
     if($verify_token && $token){
       if($verify_token->status == 'OK'){
-        $verify_user=HubUsers::feedLocalUser($verify_token->data->access_token);
+        $verify_user=HubUsers::feedLocalUser($verify_token->data->api_token);
         Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
       }  
    
-      if($token != $verify_token->data->access_token){
-        \Session::put('hub_ssk',$verify_token->data->access_token);
+      if($token != $verify_token->data->api_token){
+        \Session::put('hub_ssk',$verify_token->data->api_token);
         \Session::save();
         $response = $next($request);
        
