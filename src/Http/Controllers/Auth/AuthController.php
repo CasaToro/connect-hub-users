@@ -23,7 +23,6 @@ class AuthController {
       $data=[
         'token'=>$token
       ];
-      $route= config('hub-paths.path_token');  
       $response=Helpers::httpPostJsonWithOutToken($this->route.config('hub-paths.path_token').config('hub-service-key.key'),$data);
       return $response;
     }
