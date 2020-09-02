@@ -29,7 +29,7 @@ class CheckProfiles
     }
 
     $user_profiles=[];
-    $_verify_user=HubUsers::getUserAuth(config('hub-service-key.key'),$token);
+    $_verify_user=HubUsers::getUserAuth($token);
     $verify_user=json_decode($_verify_user);
     if($verify_user){
        if($verify_user->user->profiles && count($verify_user->user->profiles)>0){
