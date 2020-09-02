@@ -11,7 +11,7 @@ class RouteServiceProvider extends ServiceProvider
 
 	public function map()
     {
-        $this->mapApiRoutes();
+        //$this->mapApiRoutes();
 
         $this->mapWebRoutes();
 
@@ -38,12 +38,12 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiRoutes()
+  /*  protected function mapApiRoutes()
     {
         Route::prefix('api')
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(__DIR__.'/../routes/api.php');
-    }
+    }*/
 }
 
