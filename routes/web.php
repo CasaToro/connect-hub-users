@@ -1,6 +1,6 @@
 <?php 
 Route::group(['middleware' => ['web']], function () {
-	Route::get('hub-users-info','Auth\AuthController@getUserInfoServices');
+	Route::get('hub-users-info','Auth\AuthController@getUserInfoServices')->middleware(['hub-users-auth']);
 	Route::post('data-user','Test\TestController@infoUserAuth');
 	Route::post('login-client','Test\TestController@login');
 	Route::post('data-profiles','Test\TestController@infoUserProfile');
