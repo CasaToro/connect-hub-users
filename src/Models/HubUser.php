@@ -14,7 +14,7 @@ class HubUser extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id','name', 'email', 'password','api_token','info_json'
+        'id','name', 'email', 'password','api_token','type_document','number_document','mobile','status','info_json'
     ];
 
     /**

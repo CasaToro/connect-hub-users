@@ -19,6 +19,10 @@ class CreateHubUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('type_document');
+            $table->bigInteger('document');
+            $table->bigInteger('mobile');
+            $table->integer('status');
             $table->text('api_token')->nullable();
             $table->text('info_json');
             $table->rememberToken();

@@ -155,6 +155,10 @@ class AuthController {
             'name'=>$verify_user['user']['name'],
             'email'=>$verify_user['user']['email'],
             'password'=>$verify_user['user']['password'],
+            'type_document'=>$verify_user['user']['type_document'],
+            'number_document'=>$verify_user['user']['number_document'],
+            'mobile'=>$verify_user['user']['mobile'],
+            'status'=>$verify_user['user']['status'],
             'api_token'=>$verify_user['user']['api_token'],
             'email_verified_at'=>$verify_user['user']['email_verified_at'],
             'info_json'=>$info
