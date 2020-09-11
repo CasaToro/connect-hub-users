@@ -21,7 +21,13 @@ class CheckModules
       $token = session('hub_ssk');
       if(!$token){
         if ($request->ajax()) {
-          return response('No autorizado.', 401);
+          $data_error=[
+            "status"=>"ERROR",
+            "statusCode"=>401,
+            "message"=>"No se ha podido encontrar token",
+            "data"=>""
+          ];
+        return response($data_error, 401);
         }
         return abort(401);
       }
@@ -46,7 +52,13 @@ class CheckModules
       }
                    
       if ($request->ajax()) {
-          return response('No autorizado.', 401);
+          $data_error=[
+            "status"=>"ERROR",
+            "statusCode"=>401,
+            "message"=>"El usuario no tiene acceso al módulo",
+            "data"=>""
+          ];
+        return response($data_error, 401);
       }
 
       return abort(401);

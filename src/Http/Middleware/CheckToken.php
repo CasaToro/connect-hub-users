@@ -31,7 +31,13 @@ class CheckToken
 
     if(!$token){
       if ($request->ajax()) {
-        return response('No autorizado.', 401);
+         $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"No se ha podido encontrar token",
+          "data"=>""
+        ];
+        return response($data_error, 401);
       }
       return redirect(config('hub-paths.route_local_login'));
     }
@@ -41,27 +47,35 @@ class CheckToken
     if($verify_token && $token){
       if($verify_token->status == 'OK'){
         $verify_user=HubUsers::feedLocalUser($verify_token->data->api_token);
-        Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
+        if(!Auth::user()){
+          Auth::guard()->loginUsingId($verify_user->id, false);
+        }          
       }  
    
       if($token != $verify_token->data->api_token){
         \Session::put('hub_ssk',$verify_token->data->api_token);
+        \Session::put('profile',$request->profile);
         \Session::save();
         $response = $next($request);
        
       }else{
         \Session::put('hub_ssk',$token);
+        \Session::put('profile',$request->profile);
         \Session::save();
         $response = $next($request);
-        
-      }        
-        
+      }       
       return $response;     
     } 
        
 
     if ($request->ajax()) {
-        return response('No autorizado.', 401);
+        $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"No se ha podido autenticar usuario con el Hub",
+          "data"=>""
+        ]; 
+        return response($data_error,401);
     }
     return redirect(config('hub-paths.route_local_login'));
     
