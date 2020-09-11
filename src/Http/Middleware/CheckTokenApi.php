@@ -24,7 +24,13 @@ class CheckTokenApi
 
     if(!$token){
       if ($request->ajax()) {
-        return response('No autorizado.', 401);
+        $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"No se ha podido encontrar token",
+          "data"=>""
+        ];
+        return response($data_error, 401);
       }
     }
 
@@ -32,14 +38,19 @@ class CheckTokenApi
     $verify_token=json_decode($_verify_token);
     if($verify_token && $token){
       if($verify_token->status == 'OK'){
-        $verify_user=HubUsers::feedLocalUser($verify_token->data->api_token);
-        Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($verify_user->id, false);        
+        $verify_user=HubUsers::feedLocalUser($verify_token->data->api_token);       
       } 
       return $next($request);     
     }    
 
     if ($request->ajax()) {
-        return response('Token invalido.', 401);
+        $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"Token Invalido",
+          "data"=>""
+        ];
+        return response($data_error, 401);
     }
   }   
 }

@@ -38,7 +38,7 @@ class AuthController {
           $token=$_response->data->access_token;
           $this->setSessionToken($token, $profile_key);
           $hub_user=$this->feedLocalUser($token);
-          Auth::guard((config('hub-auth.guard-hub')))->loginUsingId($hub_user->id, false);
+          Auth::guard()->loginUsingId($hub_user->id, false);
         }
       }
   		return $response;
@@ -107,7 +107,7 @@ class AuthController {
        if($response){
         $_response=json_decode($response);    
         if($_response->status=='OK'){
-          $this->guard(config('hub-auth.guard-hub'))->logout();
+          $this->guard()->logout();
           \Session::forget('hub_ssk'); 
           \Session::forget('profile');
           \Session::save();
@@ -135,9 +135,9 @@ class AuthController {
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard($guard)
+    protected function guard()
     {
-        return Auth::guard($guard);
+        return Auth::guard();
     }
 
     //------------------------------------------------------------------------
@@ -174,7 +174,6 @@ class AuthController {
     //--------------------Establecer token en sesion --------------------------------
      public function setSessionToken($token, $profile_key){
       $response = new Response(); 
-      \Session::start();
       \Session::put('hub_ssk',$token);
       \Session::put('profile',$profile_key);      
       \Session::save();

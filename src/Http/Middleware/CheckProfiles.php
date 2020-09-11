@@ -23,7 +23,13 @@ class CheckProfiles
     $token = session('hub_ssk');
     if(!$token){
       if ($request->ajax()) {
-        return response('No autorizado.', 401);
+        $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"No se ha podido encontrar token",
+          "data"=>""
+        ];
+        return response($data_error, 401);
       }
       return abort(401);
     }
@@ -45,7 +51,13 @@ class CheckProfiles
     }
 
     if ($request->ajax()) {
-      return response('No autorizado.', 401);
+      $data_error=[
+          "status"=>"ERROR",
+          "statusCode"=>401,
+          "message"=>"El perfil no esta autorizado",
+          "data"=>""
+        ];
+        return response($data_error, 401);
     }
 
     return abort(401);
