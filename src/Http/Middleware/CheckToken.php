@@ -54,13 +54,11 @@ class CheckToken
    
       if($token != $verify_token->data->api_token){
         \Session::put('hub_ssk',$verify_token->data->api_token);
-        \Session::put('profile',$request->profile);
         \Session::save();
         $response = $next($request);
        
       }else{
         \Session::put('hub_ssk',$token);
-        \Session::put('profile',$request->profile);
         \Session::save();
         $response = $next($request);
       }       
