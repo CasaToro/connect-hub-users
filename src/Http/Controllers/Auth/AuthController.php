@@ -147,8 +147,11 @@ class AuthController {
       $verify_user=$this->getUserAuth($token);
       $verify_user=json_decode($verify_user,true);
       if($verify_user['user']){
-        $info=array_merge($verify_user['user']['services'],$verify_user['user']['profiles']);
-        $info=json_encode($info);
+        //$info=array_merge($verify_user['user']['services'],$verify_user['user']['profiles']);
+        $info=array();
+        $info['services']=$verify_user['user']['services'];
+        $info['profiles']=$verify_user['user']['profiles'];
+        $_info=json_encode($info);
         HubUser::UpdateOrCreate(['id'=>$verify_user['user']['id']],
           [
             'id'=>$verify_user['user']['id'],   
@@ -161,7 +164,7 @@ class AuthController {
             'status'=>$verify_user['user']['status'],
             'api_token'=>$verify_user['user']['api_token'],
             'email_verified_at'=>$verify_user['user']['email_verified_at'],
-            'info_json'=>$info
+            'info_json'=>$_info
           ]); 
         $hub_user=HubUser::where('email',$verify_user['user']['email'])->first();
         return $hub_user;
