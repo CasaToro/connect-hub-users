@@ -96,7 +96,7 @@ $response_new_user=json_decode($response_new_user);
 ```
 Para hacer cierre de sesión, invalidación de token y borrado de llaves de sesión,  use lo siguiente:
 ```php
-$response=HubUsers::logout(config('hub-service-key.key'),$data);
+$response=HubUsers::logout();
 ```
 ## Middlewares
 Para proteger las rutas y refrescar el token del usuario en sesión, utilize el helper middleware y en el array especifique lo siguiente:
