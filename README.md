@@ -7,7 +7,7 @@ Este paquete integra los usuarios creados en la plataforma de administracion "hu
 Utilize el siguiente comando de composer para instalar este paquete:
 
 ```bash
-composer require connect-hub-users
+composer require casa-toro/connect-hub-users
 ```
 Elija las siguientes opciones de publicacion del hub de usuarios:
 
@@ -32,7 +32,7 @@ return [
 	'route_local_login'=>''
 ]  
 ```
-Dichas rutas se las proveerá el administrador del paquete para que las modifique en el archivo mencionado. En el array 'route_local_login' debera asignar el nombre que le tenga a la ruta de su login.
+Dichas rutas se las proveerá el administrador del paquete para que las modifique en el archivo mencionado a través de variables de config de entorno ".env". En el array 'route_local_login' debera asignar el nombre que le tenga a la ruta de su login.
 
 Para configurar la llave que es asignada a su proyecto debera utilizar el siguiente commando:
 ``` bash
@@ -52,8 +52,9 @@ Para acceder al login del hub de usuarios debera usar el siguiente helper:
 $datos=[
 	'email'=>'johndoe@gmail.com',
 	'password'=>'password',
+	'profile_key'=>'llave_entrega_por_el_admin'
 ];
-$response=HubUsers::login(config('hub-service-key.key'),'env('key-profile')',$datos);
+$response=HubUsers::login($datos['profile_key'],$datos);
 $response=json_decode($response);
 ```
 Previamente el administrador del paquete debera hacer el registro de usuario y suministrarle las credenciales. 
@@ -63,17 +64,13 @@ Cuando se realize el login con éxito se creara una variable de sesion que conti
 El token quedara con la siguiente llave dentro de sus variables de sesión:
 ```php
 $token = session('hub_ssk');
+$profile = session('profile');
 ```
-Podra obtener la información del usuario utilizando utilizando el siguiente helper
-```php
-$data=[
-  'accessToken'=>$token
-];
-		
-$user=HubUsers::getUserProfile(config('hub-service-key.key'),env('key-profile'),$data);
+Puede obtener información del perfil utilzando el siguiente helper:
+```		
+$user=HubUsers::getUserProfile(session('profile'));
 $user = json_decode($response);
 ```
-* Notesé que el access token debera enviarlo en la data para poder obtener la informacion del usuario y debera hacerlo como se muestra la key del array, de otra manera no podrá obtener respuesta.
 
 Puede crear un usuario utilizando estos helpers:
 ```php
@@ -93,16 +90,12 @@ $data_create_user=[];
   'password'=>'password',
   'accessToken'=>session('hub_ssk')
  ];
-
+//Actualizara la información si el usuario ya esta creado pero dentro  de la data debera enviar el id, sin id creara al usuario
 $response_new_user=HubUsers::userUpdate(config('hub-service-key.key'),$data_create_user);
 $response_new_user=json_decode($response_new_user);
 ```
 Para hacer cierre de sesión, invalidación de token y borrado de llaves de sesión,  use lo siguiente:
 ```php
-$data=[
-	'accessToken'=>$token
-];
-
 $response=HubUsers::logout(config('hub-service-key.key'),$data);
 ```
 ## Middlewares
