@@ -114,4 +114,4 @@ public function __construct(){
 Las llaves de los módulos creados para su proyecto tambien serán suministradas por el administrador del paquete.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE.md)
