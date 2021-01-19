@@ -5,7 +5,8 @@
     "authors": [
         {
             "name": "JohnAragon",
-            "email": "john@bellpi.com"
+            "email": "john@bellpi.com",
+            "license":"MIT"
         }
     ],
     "minimum-stability": "dev",
